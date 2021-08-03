@@ -25,5 +25,7 @@ class MemberRepository(
         em.createQuery(
             "select m from Member m where m.name = :name",
             Member::class.java
-        ).resultList
+        )
+            .setParameter("name", name)
+            .resultList
 }
