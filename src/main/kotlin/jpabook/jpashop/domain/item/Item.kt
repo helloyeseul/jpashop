@@ -6,30 +6,31 @@ import javax.persistence.*
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
-sealed class Item(
+abstract class Item(name: String, price: Int, stockQuantity: Int, categories: List<Category>) {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    open val id: Long,
+    val id: Long = 0
 
     /**
      * 상품명
      */
-    open val name: String,
+    val name: String = name
 
     /**
      * 상품 가격
      */
-    open val price: Int,
+    val price: Int = price
 
     /**
      * 재고 수량
      */
-    open val stockQuantity: Int,
+    val stockQuantity: Int = stockQuantity
 
     /**
      * 카테고리 목록
      */
     @ManyToMany(mappedBy = "items")
-    open val categories: List<Category> = arrayListOf()
-)
+    val categories: List<Category> = categories
+}

@@ -3,7 +3,7 @@ package jpabook.jpashop.domain
 import javax.persistence.Embeddable
 
 @Embeddable
-data class Address(
+class Address(
 
     /**
      * 도시명
