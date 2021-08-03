@@ -15,7 +15,7 @@ class Category(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    val id: Long = 0
+    val id: Long? = null
 
     /**
      * 카테고리명

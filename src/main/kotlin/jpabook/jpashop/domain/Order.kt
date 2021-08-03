@@ -18,7 +18,7 @@ class Order(
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "order_id")
-    val id: Long = 0
+    val id: Long? = null
 
     /**
      * 주문자

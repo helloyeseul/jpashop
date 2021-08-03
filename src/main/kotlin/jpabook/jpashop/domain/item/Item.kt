@@ -12,7 +12,7 @@ abstract class Item(name: String, price: Int, stockQuantity: Int, categories: Li
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    val id: Long = 0
+    val id: Long? = null
 
     /**
      * 상품명
