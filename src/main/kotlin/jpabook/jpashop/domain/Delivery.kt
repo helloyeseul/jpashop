@@ -5,27 +5,32 @@ import javax.persistence.FetchType.LAZY
 
 
 @Entity
-data class Delivery(
+class Delivery(order: Order, address: Address, status: DeliveryStatus) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
-    val id: Long,
+    val id: Long = 0
 
     /**
      * 주문 정보
      */
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
-    val order: Order,
+    var order: Order = order
+        protected set
 
     /**
      * 배송 주소
      */
-    val address: Address,
+    val address: Address = address
 
     /**
      * 배송 상태 [READY, COMP]
      */
     @Enumerated(EnumType.STRING)
-    val status: DeliveryStatus
-)
+    val status: DeliveryStatus = status
+
+    fun updateOrder(order: Order) {
+        this.order = order
+    }
+}

@@ -5,34 +5,39 @@ import javax.persistence.*
 import javax.persistence.FetchType.LAZY
 
 @Entity
-data class OrderItem(
+class OrderItem(item: Item, order: Order, orderPrice: Int, count: Int) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id")
-    val id: Long,
+    val id: Long = 0
 
     /**
      * 주문 상품
      */
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
-    val item: Item,
+    val item: Item = item
 
     /**
      * 주문 정보
      */
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id")
-    val order: Order,
+    var order: Order = order
+        protected set
 
     /**
      * 주문 가격
      */
-    val orderPrice: Int,
+    val orderPrice: Int = orderPrice
 
     /**
      * 주문 수량
      */
-    val count: Int
-)
+    val count: Int = count
+
+    fun updateOrder(order: Order) {
+        this.order = order
+    }
+}

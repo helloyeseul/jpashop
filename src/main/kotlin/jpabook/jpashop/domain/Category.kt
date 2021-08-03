@@ -5,17 +5,22 @@ import javax.persistence.*
 import javax.persistence.FetchType.LAZY
 
 @Entity
-data class Category(
+class Category(
+    name: String,
+    items: List<Item>,
+    parent: Category? = null,
+    children: MutableList<Category> = arrayListOf()
+) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    val id: Long,
+    val id: Long = 0
 
     /**
      * 카테고리명
      */
-    val name: String,
+    val name: String = name
 
     /**
      * 해당 카테고리에 속한 상품 목록
@@ -26,12 +31,19 @@ data class Category(
         joinColumns = [JoinColumn(name = "category_id")],
         inverseJoinColumns = [JoinColumn(name = "item_id")]
     )
-    val items: List<Item> = arrayListOf(),
+    val items: List<Item> = items
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
-    val parent: Category?,
+    var parent: Category? = parent
+        protected set
 
     @OneToMany(mappedBy = "parent")
-    val children: List<Category> = arrayListOf()
-)
+    val children: MutableList<Category> = children
+
+
+    fun addChildCategory(child: Category) {
+        this.children += child
+        child.parent = this
+    }
+}
