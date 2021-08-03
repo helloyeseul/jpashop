@@ -10,7 +10,7 @@ class Delivery(order: Order, address: Address, status: DeliveryStatus) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
-    val id: Long = 0
+    val id: Long? = null
 
     /**
      * 주문 정보
