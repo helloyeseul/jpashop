@@ -3,7 +3,7 @@ package jpabook.jpashop.domain
 import javax.persistence.*
 
 @Entity
-class Member(name: String, address: Address, orders: MutableList<Order> = arrayListOf()) {
+class Member(name: String, address: Address? = null, orders: MutableList<Order> = arrayListOf()) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ class Member(name: String, address: Address, orders: MutableList<Order> = arrayL
      * 주소
      */
     @Embedded
-    val address: Address = address
+    val address: Address? = address
 
     /**
      * 주문 목록
