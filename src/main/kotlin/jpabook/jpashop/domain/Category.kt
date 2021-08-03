@@ -2,6 +2,7 @@ package jpabook.jpashop.domain
 
 import jpabook.jpashop.domain.item.Item
 import javax.persistence.*
+import javax.persistence.FetchType.LAZY
 
 @Entity
 data class Category(
@@ -27,7 +28,7 @@ data class Category(
     )
     val items: List<Item> = arrayListOf(),
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
     val parent: Category?,
 

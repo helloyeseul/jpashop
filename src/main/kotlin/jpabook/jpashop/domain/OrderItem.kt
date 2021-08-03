@@ -2,6 +2,7 @@ package jpabook.jpashop.domain
 
 import jpabook.jpashop.domain.item.Item
 import javax.persistence.*
+import javax.persistence.FetchType.LAZY
 
 @Entity
 data class OrderItem(
@@ -14,14 +15,14 @@ data class OrderItem(
     /**
      * 주문 상품
      */
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
     val item: Item,
 
     /**
      * 주문 정보
      */
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id")
     val order: Order,
 

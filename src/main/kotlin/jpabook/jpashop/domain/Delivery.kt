@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain
 
 import javax.persistence.*
+import javax.persistence.FetchType.LAZY
 
 
 @Entity
@@ -14,7 +15,7 @@ data class Delivery(
     /**
      * 주문 정보
      */
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = LAZY)
     val order: Order,
 
     /**

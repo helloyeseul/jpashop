@@ -2,33 +2,35 @@ package jpabook.jpashop.domain
 
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.persistence.FetchType.LAZY
+import javax.persistence.GenerationType.IDENTITY
 
 @Entity
 @Table(name = "orders")
 data class Order(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "order_id")
     val id: Long,
 
     /**
      * 주문자
      */
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     val member: Member,
 
     /**
      * 주문 목록
      */
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
     val orderItems: List<OrderItem> = arrayListOf(),
 
     /**
      * 배송지 정보
      */
-    @OneToOne
+    @OneToOne(fetch = LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id")
     val delivery: Delivery,
 
