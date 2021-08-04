@@ -9,10 +9,8 @@ import javax.persistence.GenerationType.IDENTITY
 @Table(name = "orders")
 class Order(
     member: Member,
-    orderItems: MutableList<OrderItem> = arrayListOf(),
     delivery: Delivery,
-    orderDate: LocalDateTime,
-    status: OrderStatus
+    orderItems: MutableList<OrderItem>
 ) {
 
     @Id
@@ -25,22 +23,29 @@ class Order(
      */
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
-    var member: Member = member
-        protected set
-
-    /**
-     * 주문 목록
-     */
-    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    val orderItems: MutableList<OrderItem> = orderItems
+    val member: Member = member.also { it.orders += this }
 
     /**
      * 배송지 정보
      */
     @OneToOne(fetch = LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id")
-    var delivery: Delivery = delivery
-        protected set
+    var delivery: Delivery = delivery.also { it.order = this }
+        set(value) {
+            field = value
+            value.order = this
+        }
+
+    /**
+     * 주문 목록
+     */
+    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
+    private val orderItems: MutableList<OrderItem> = arrayListOf<OrderItem>().also {
+        orderItems.forEach { item -> addOrderItem(item) }
+    }
+
+    val orderItemList: List<OrderItem>
+        get() = orderItems.toList()
 
     /**
      * 주문 시간
@@ -48,30 +53,34 @@ class Order(
      * Tips) Date 타입을 써서 어노테이션으로 로컬시간 매핑하는 방법 대신,
      * LocalDateTime 을 쓰면 하이버네이트가 알아서 매핑해서 저장해줌
      */
-    val orderDate: LocalDateTime = orderDate
+    val orderDate: LocalDateTime = LocalDateTime.now()
 
     /**
      * 주문 상태 [ORDER, CANCEL]
      */
     @Enumerated(EnumType.STRING)
-    val status: OrderStatus = status
-
+    var status: OrderStatus = OrderStatus.ORDER
 
     /**
-     * 연관관계 메서드
+     * 총 주문 가격
      */
-    fun updateMember(member: Member) {
-        this.member = member
-        member.orders += this
-    }
+    val totalPrice: Int
+        get() = orderItems.sumOf { it.totalPrice }
+
+    /* 연관 관계 메서드 */
 
     fun addOrderItem(orderItem: OrderItem) {
         orderItems += orderItem
-        orderItem.updateOrder(this)
+        orderItem.order = this
     }
 
-    fun updateDelivery(delivery: Delivery) {
-        this.delivery = delivery
-        delivery.updateOrder(this)
+    /* 비지니스 로직 */
+
+    fun cancel() {
+        check(delivery.status == DeliveryStatus.READY) {
+            "${member.name}님이 주문하신 ${orderItems[0].item.name} 상품은 취소가 불가능합니다. (배송 완료)"
+        }
+        status = OrderStatus.CANCEL
+        orderItems.forEach { it.cancel() }
     }
 }
