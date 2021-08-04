@@ -42,8 +42,8 @@ class OrderService(
         // 주문 생성
         val order = Order(
             member = member,
-            orderItems = arrayListOf(orderItem),
-            delivery = delivery
+            delivery = delivery,
+            orderItems = arrayListOf(orderItem)
         )
 
         // 주문 저장
@@ -53,8 +53,13 @@ class OrderService(
     }
 
     // 취소
-
+    @Transactional
+    fun cancelOrder(orderId: Long) {
+        orderRepository.findOne(orderId).cancel()
+    }
 
     // 검색
-
+//    fun findOrders(orderSearch: OrderSearch): List<Order> {
+//
+//    }
 }
