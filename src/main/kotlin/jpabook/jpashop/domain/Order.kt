@@ -11,7 +11,7 @@ import javax.persistence.GenerationType.IDENTITY
 class Order(
     member: Member,
     delivery: Delivery,
-    orderItems: MutableList<OrderItem>
+    orderItems: List<OrderItem>
 ) : BaseEntity() {
 
     @Id
@@ -41,8 +41,8 @@ class Order(
      * 주문 목록
      */
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    protected val orderItems: MutableList<OrderItem> = arrayListOf<OrderItem>().also {
-        orderItems.forEach { item -> addOrderItem(item) }
+    protected val orderItems: MutableList<OrderItem> = orderItems.toMutableList().also {
+        it.forEach { item -> item.order = this }
     }
 
     val orderItemList: List<OrderItem>
