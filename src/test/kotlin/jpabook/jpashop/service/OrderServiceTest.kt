@@ -3,9 +3,11 @@ package jpabook.jpashop.service
 import jpabook.jpashop.domain.Address
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.domain.OrderStatus
+import jpabook.jpashop.domain.base.persistAndGetId
 import jpabook.jpashop.domain.item.Book
 import jpabook.jpashop.exception.NotEnoughStockException
 import jpabook.jpashop.repository.OrderRepository
+import jpabook.jpashop.repository.OrderSearch
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -98,6 +100,38 @@ internal class OrderServiceTest {
 
         assertEquals(OrderStatus.CANCEL, order.status, "주문 취소 상태 변경")
         assertEquals(stock, book.stockQuantity, "주문 취소 후 재고 수량")
+    }
+
+    @Test
+    fun find() {
+        // given
+        val member1 = createMember("이예슬")
+        val member2 = createMember("이현택")
+
+        val memberId1 = em.persistAndGetId(member1)
+        val memberId2 = em.persistAndGetId(member2)
+
+        val book1 = createBook("JPA", "JPA", 5000, 20)
+        val book2 = createBook("KOTLIN", "kotlin", 10000, 10)
+
+        val bookId1 = em.persistAndGetId(book1)
+        val bookId2 = em.persistAndGetId(book2)
+
+        // when
+        val order1 = orderService.order(memberId1, bookId1, 2)
+        val order2 = orderService.order(memberId1, bookId2, 1)
+        val order3 = orderService.order(memberId2, bookId1, 2)
+        val order4 = orderService.order(memberId2, bookId2, 3)
+
+        // then
+        assertEquals(4, orderService.findOrders(OrderSearch("이")).size)
+        assertEquals(4, orderService.findOrders(OrderSearch(orderStatus = OrderStatus.ORDER)).size)
+
+        assertEquals(2, orderService.findOrders(OrderSearch("이예슬")).size)
+        assertEquals(0, orderService.findOrders(OrderSearch("이", OrderStatus.CANCEL)).size)
+
+        orderService.cancelOrder(order1)
+        assertEquals(1, orderService.findOrders(OrderSearch(orderStatus = OrderStatus.CANCEL)).size)
     }
 
     private fun createBook(name: String, author: String, price: Int, stock: Int) = Book(
