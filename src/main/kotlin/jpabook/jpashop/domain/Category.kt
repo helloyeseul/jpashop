@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain
 
+import jpabook.jpashop.domain.base.BaseEntity
 import jpabook.jpashop.domain.item.Item
 import javax.persistence.*
 import javax.persistence.FetchType.LAZY
@@ -10,12 +11,12 @@ class Category(
     items: List<Item>,
     parent: Category? = null,
     children: MutableList<Category> = arrayListOf()
-) {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    val id: Long? = null
+    override val id: Long? = null
 
     /**
      * 카테고리명

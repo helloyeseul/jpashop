@@ -1,23 +1,26 @@
 package jpabook.jpashop.domain
 
+import jpabook.jpashop.domain.base.BaseEntity
 import javax.persistence.*
 import javax.persistence.FetchType.LAZY
 
 
 @Entity
-class Delivery(order: Order, address: Address, status: DeliveryStatus) {
+class Delivery(
+    address: Address,
+    status: DeliveryStatus = DeliveryStatus.READY
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
-    val id: Long? = null
+    override val id: Long? = null
 
     /**
      * 주문 정보
      */
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
-    var order: Order = order
-        protected set
+    var order: Order? = null
 
     /**
      * 배송 주소
@@ -29,8 +32,4 @@ class Delivery(order: Order, address: Address, status: DeliveryStatus) {
      */
     @Enumerated(EnumType.STRING)
     val status: DeliveryStatus = status
-
-    fun updateOrder(order: Order) {
-        this.order = order
-    }
 }

@@ -16,7 +16,7 @@ class MemberService(
     fun join(member: Member): Long {
         validateDuplicateMember(member)
         memberRepository.save(member)
-        return member.id!!
+        return requireNotNull(member.id)
     }
 
     /**

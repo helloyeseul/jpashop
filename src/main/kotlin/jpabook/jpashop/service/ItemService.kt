@@ -19,5 +19,5 @@ class ItemService(
 
     fun findItems(): List<Item> = itemRepository.findAll()
 
-    fun findOne(itemId: Long): Item = itemRepository.findOne(itemId)
+    fun findOne(itemId: Long): Item? = itemRepository.findOne(itemId)
 }
