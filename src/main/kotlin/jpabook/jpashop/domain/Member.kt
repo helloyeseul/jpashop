@@ -1,14 +1,18 @@
 package jpabook.jpashop.domain
 
+import jpabook.jpashop.domain.base.BaseEntity
 import javax.persistence.*
 
 @Entity
-class Member(name: String, address: Address? = null, orders: MutableList<Order> = arrayListOf()) {
+class Member(
+    name: String,
+    address: Address? = null
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    val id: Long? = null
+    override val id: Long? = null
 
     /**
      * 이름
@@ -25,5 +29,5 @@ class Member(name: String, address: Address? = null, orders: MutableList<Order> 
      * 주문 목록
      */
     @OneToMany(mappedBy = "member")
-    val orders: MutableList<Order> = orders
+    val orders: MutableList<Order> = arrayListOf()
 }

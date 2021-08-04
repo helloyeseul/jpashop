@@ -1,16 +1,21 @@
 package jpabook.jpashop.domain
 
+import jpabook.jpashop.domain.base.BaseEntity
 import jpabook.jpashop.domain.item.Item
 import javax.persistence.*
 import javax.persistence.FetchType.LAZY
 
 @Entity
-class OrderItem(item: Item, orderPrice: Int, count: Int) {
+class OrderItem(
+    item: Item,
+    orderPrice: Int,
+    count: Int
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id")
-    val id: Long? = null
+    override val id: Long? = null
 
     /**
      * 주문 상품

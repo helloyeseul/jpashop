@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain
 
+import jpabook.jpashop.domain.base.BaseEntity
 import javax.persistence.*
 import javax.persistence.FetchType.LAZY
 
@@ -8,12 +9,12 @@ import javax.persistence.FetchType.LAZY
 class Delivery(
     address: Address,
     status: DeliveryStatus = DeliveryStatus.READY
-) {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
-    val id: Long? = null
+    override val id: Long? = null
 
     /**
      * 주문 정보

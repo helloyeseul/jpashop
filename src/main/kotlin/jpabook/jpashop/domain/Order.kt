@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain
 
+import jpabook.jpashop.domain.base.BaseEntity
 import java.time.LocalDateTime
 import javax.persistence.*
 import javax.persistence.FetchType.LAZY
@@ -11,12 +12,12 @@ class Order(
     member: Member,
     delivery: Delivery,
     orderItems: MutableList<OrderItem>
-) {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "order_id")
-    val id: Long? = null
+    override val id: Long? = null
 
     /**
      * 주문자
@@ -40,7 +41,7 @@ class Order(
      * 주문 목록
      */
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    private val orderItems: MutableList<OrderItem> = arrayListOf<OrderItem>().also {
+    protected val orderItems: MutableList<OrderItem> = arrayListOf<OrderItem>().also {
         orderItems.forEach { item -> addOrderItem(item) }
     }
 
