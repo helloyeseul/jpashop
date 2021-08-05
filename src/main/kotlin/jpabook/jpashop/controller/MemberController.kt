@@ -42,4 +42,9 @@ class MemberController(
 
         return "redirect:/"
     }
+
+    @GetMapping("/members")
+    fun list(model: Model) = "members/memberList".also {
+        model.addAttribute("members", memberService.findMembers())
+    }
 }
