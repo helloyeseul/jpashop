@@ -12,9 +12,8 @@ class Album(
     name: String,
     price: Int,
     stockQuantity: Int,
-    categories: List<Category> = arrayListOf(),
-    id: Long? = null
-) : Item(name, price, stockQuantity, categories, id) {
+    categories: List<Category> = arrayListOf()
+) : Item(name, price, stockQuantity, categories) {
 
     /**
      * 아티스트

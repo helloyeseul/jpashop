@@ -61,15 +61,13 @@ class ItemController(
         @PathVariable itemId: Long,
         @ModelAttribute("form") form: BookForm
     ): String = "redirect:/items".also {
-        itemService.saveItem(
-            Book(
-                id = requireNotNull(form.id),
-                name = requireNotBlank(form.name),
-                price = requireNotNull(form.price?.takeIf { it > 0 }),
-                stockQuantity = requireNotNull(form.stockQuantity?.takeIf { it > 0 }),
-                author = requireNotBlank(form.author),
-                isbn = requireNotBlank(form.isbn)
-            )
+        itemService.updateItem(
+            itemId = itemId,
+            name = form.name,
+            price = form.price,
+            stockQuantity = form.stockQuantity,
+            author = form.author,
+            isbn = form.isbn
         )
     }
 }

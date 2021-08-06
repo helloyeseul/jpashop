@@ -12,17 +12,26 @@ class Book(
     name: String,
     price: Int,
     stockQuantity: Int,
-    categories: List<Category> = arrayListOf(),
-    id: Long? = null
-) : Item(name, price, stockQuantity, categories, id) {
+    categories: List<Category> = arrayListOf()
+) : Item(name, price, stockQuantity, categories) {
 
     /**
      * 저자
      */
-    val author: String = author
+    var author: String = author
+        protected set
 
     /**
      * 도서 번호
      */
-    val isbn: String = isbn
+    var isbn: String = isbn
+        protected set
+
+    fun updateAuthor(author: String) {
+        this.author = author
+    }
+
+    fun updateIsbn(isbn: String) {
+        this.isbn = isbn
+    }
 }

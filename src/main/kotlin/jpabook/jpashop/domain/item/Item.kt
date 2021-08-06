@@ -12,24 +12,25 @@ abstract class Item(
     name: String,
     price: Int,
     stockQuantity: Int,
-    categories: List<Category>,
-    id: Long?
+    categories: List<Category>
 ) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    override val id: Long? = id
+    override val id: Long? = null
 
     /**
      * 상품명
      */
-    val name: String = name
+    var name: String = name
+        protected set
 
     /**
      * 상품 가격
      */
-    val price: Int = price
+    var price: Int = price
+        protected set
 
     /**
      * 재고 수량
@@ -59,5 +60,17 @@ abstract class Item(
             throw NotEnoughStockException("need more stock")
         }
         this.stockQuantity = restStock
+    }
+
+    fun updateName(name: String) {
+        this.name = name
+    }
+
+    fun updatePrice(price: Int) {
+        this.price = price
+    }
+
+    fun updateStock(quantity: Int) {
+        this.stockQuantity = quantity
     }
 }
