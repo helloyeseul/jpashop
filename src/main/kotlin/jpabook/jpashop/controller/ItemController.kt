@@ -30,4 +30,9 @@ class ItemController(
             )
         )
     }
+
+    @GetMapping("/items")
+    fun list(model: Model): String = "items/itemList".also {
+        model.addAttribute("items", itemService.findItems())
+    }
 }
