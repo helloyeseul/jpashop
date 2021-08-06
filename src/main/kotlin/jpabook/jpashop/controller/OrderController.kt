@@ -6,10 +6,7 @@ import jpabook.jpashop.service.MemberService
 import jpabook.jpashop.service.OrderService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 @Controller
 class OrderController(
@@ -40,4 +37,10 @@ class OrderController(
     ): String = "orders/orderList".also {
         model.addAttribute("orders", orderService.findOrders(orderSearch))
     }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    fun cancelOrder(@PathVariable("orderId") orderId: Long): String =
+        "redirect:/orders".also {
+            orderService.cancelOrder(orderId)
+        }
 }
