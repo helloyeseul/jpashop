@@ -23,12 +23,14 @@ abstract class Item(
     /**
      * 상품명
      */
-    val name: String = name
+    var name: String = name
+        protected set
 
     /**
      * 상품 가격
      */
-    val price: Int = price
+    var price: Int = price
+        protected set
 
     /**
      * 재고 수량
@@ -58,5 +60,11 @@ abstract class Item(
             throw NotEnoughStockException("need more stock")
         }
         this.stockQuantity = restStock
+    }
+
+    protected fun update(name: String, price: Int, quantity: Int) {
+        this.name = name
+        this.price = price
+        this.stockQuantity = quantity
     }
 }

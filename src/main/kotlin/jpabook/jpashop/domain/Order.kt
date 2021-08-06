@@ -41,9 +41,8 @@ class Order(
      * 주문 목록
      */
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    protected val orderItems: MutableList<OrderItem> = orderItems.toMutableList().also {
-        it.forEach { item -> item.order = this }
-    }
+    protected val orderItems: MutableList<OrderItem> =
+        orderItems.toMutableList().onEach { it.order = this }
 
     val orderItemList: List<OrderItem>
         get() = orderItems.toList()

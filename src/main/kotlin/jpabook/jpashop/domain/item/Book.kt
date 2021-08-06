@@ -18,10 +18,18 @@ class Book(
     /**
      * 저자
      */
-    val author: String = author
+    var author: String = author
+        protected set
 
     /**
      * 도서 번호
      */
-    val isbn: String = isbn
+    var isbn: String = isbn
+        protected set
+
+    fun update(name: String, price: Int, quantity: Int, author: String, isbn: String) {
+        super.update(name, price, quantity)
+        this.author = author
+        this.isbn = isbn
+    }
 }
