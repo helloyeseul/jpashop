@@ -62,15 +62,9 @@ abstract class Item(
         this.stockQuantity = restStock
     }
 
-    fun updateName(name: String) {
+    protected fun update(name: String, price: Int, quantity: Int) {
         this.name = name
-    }
-
-    fun updatePrice(price: Int) {
         this.price = price
-    }
-
-    fun updateStock(quantity: Int) {
         this.stockQuantity = quantity
     }
 }

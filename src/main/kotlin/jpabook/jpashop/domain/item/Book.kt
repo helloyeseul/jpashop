@@ -27,11 +27,9 @@ class Book(
     var isbn: String = isbn
         protected set
 
-    fun updateAuthor(author: String) {
+    fun update(name: String, price: Int, quantity: Int, author: String, isbn: String) {
+        super.update(name, price, quantity)
         this.author = author
-    }
-
-    fun updateIsbn(isbn: String) {
         this.isbn = isbn
     }
 }

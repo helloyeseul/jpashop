@@ -21,25 +21,16 @@ class ItemService(
     }
 
     @Transactional
-    fun updateItem(
-        itemId: Long,
-        name: String? = null,
-        price: Int? = null,
-        stockQuantity: Int? = null,
-        author: String? = null,
-        isbn: String? = null
-    ) {
-        val item = itemRepository.findOne(itemId)?.apply {
-            name?.let { updateName(it) }
-            price?.takeIf { it >= 0 }?.let { updatePrice(it) }
-            stockQuantity?.takeIf { it >= 0 }?.let { updateStock(it) }
-        }
+    fun updateItem(itemDto: UpdateItemDto) {
+        when (val item = itemRepository.findOne(itemDto.itemId)) {
+            is Book -> item.update(
+                itemDto.name,
+                itemDto.price,
+                itemDto.stockQuantity,
+                itemDto.author,
+                itemDto.isbn,
+            )
 
-        when (item) {
-            is Book -> item.run {
-                author?.let { updateAuthor(it) }
-                isbn?.let { updateIsbn(it) }
-            }
             is Album -> {
                 // update album
             }

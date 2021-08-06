@@ -3,6 +3,7 @@ package jpabook.jpashop.controller
 import jpabook.jpashop.domain.item.Book
 import jpabook.jpashop.extensions.requireNotBlank
 import jpabook.jpashop.service.ItemService
+import jpabook.jpashop.service.UpdateItemDto
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -62,12 +63,14 @@ class ItemController(
         @ModelAttribute("form") form: BookForm
     ): String = "redirect:/items".also {
         itemService.updateItem(
-            itemId = itemId,
-            name = form.name,
-            price = form.price,
-            stockQuantity = form.stockQuantity,
-            author = form.author,
-            isbn = form.isbn
+            UpdateItemDto(
+                itemId = itemId,
+                name = requireNotBlank(form.name),
+                price = requireNotNull(form.price?.takeIf { it >= 0 }),
+                stockQuantity = requireNotNull(form.stockQuantity?.takeIf { it >= 0 }),
+                author = requireNotBlank(form.author),
+                isbn = requireNotBlank(form.isbn)
+            )
         )
     }
 }
