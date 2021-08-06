@@ -12,13 +12,14 @@ abstract class Item(
     name: String,
     price: Int,
     stockQuantity: Int,
-    categories: List<Category>
+    categories: List<Category>,
+    id: Long?
 ) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    override val id: Long? = null
+    override val id: Long? = id
 
     /**
      * 상품명
