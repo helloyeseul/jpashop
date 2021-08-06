@@ -1,11 +1,13 @@
 package jpabook.jpashop.controller
 
+import jpabook.jpashop.repository.OrderSearch
 import jpabook.jpashop.service.ItemService
 import jpabook.jpashop.service.MemberService
 import jpabook.jpashop.service.OrderService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -29,5 +31,13 @@ class OrderController(
         @RequestParam("count") count: Int
     ): String = "redirect:/orders".also {
         orderService.order(memberId, itemId, count)
+    }
+
+    @GetMapping("/orders")
+    fun orderList(
+        @ModelAttribute("orderSearch") orderSearch: OrderSearch,
+        model: Model
+    ): String = "orders/orderList".also {
+        model.addAttribute("orders", orderService.findOrders(orderSearch))
     }
 }
