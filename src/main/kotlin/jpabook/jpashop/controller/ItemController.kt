@@ -6,6 +6,7 @@ import jpabook.jpashop.service.ItemService
 import jpabook.jpashop.service.UpdateItemDto
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,7 +23,7 @@ class ItemController(
     }
 
     @PostMapping("/items/new")
-    fun create(form: BookForm): String = "redirect:/".also {
+    fun create(@Validated form: BookForm): String = "redirect:/".also {
         itemService.saveItem(
             Book(
                 name = requireNotBlank(form.name),
@@ -60,7 +61,7 @@ class ItemController(
     @PostMapping("/items/{itemId}/edit")
     fun updateItem(
         @PathVariable itemId: Long,
-        @ModelAttribute("form") form: BookForm
+        @ModelAttribute("form") @Validated form: BookForm
     ): String = "redirect:/items".also {
         itemService.updateItem(
             UpdateItemDto(
