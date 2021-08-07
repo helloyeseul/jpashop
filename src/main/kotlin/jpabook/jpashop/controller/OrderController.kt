@@ -6,7 +6,9 @@ import jpabook.jpashop.service.MemberService
 import jpabook.jpashop.service.OrderService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import javax.validation.constraints.Positive
 
 @Controller
 class OrderController(
@@ -25,7 +27,7 @@ class OrderController(
     fun order(
         @RequestParam("memberId") memberId: Long,
         @RequestParam("itemId") itemId: Long,
-        @RequestParam("count") count: Int
+        @RequestParam("count") @Validated @Positive count: Int
     ): String = "redirect:/orders".also {
         orderService.order(memberId, itemId, count)
     }

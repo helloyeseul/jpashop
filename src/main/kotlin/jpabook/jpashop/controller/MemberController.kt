@@ -7,6 +7,7 @@ import jpabook.jpashop.service.MemberService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 
@@ -21,7 +22,7 @@ class MemberController(
     }
 
     @PostMapping("/members/new")
-    fun create(form: MemberForm, result: BindingResult): String {
+    fun create(@Validated form: MemberForm, result: BindingResult): String {
 
         if (result.hasErrors()) {
             return "members/createMemberForm"
