@@ -5,13 +5,15 @@ import jpabook.jpashop.api.response.BaseResponse
 import jpabook.jpashop.domain.Order
 import jpabook.jpashop.repository.OrderRepository
 import jpabook.jpashop.repository.OrderSearch
-import jpabook.jpashop.repository.dto.SimpleOrderDto
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleDto
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class OrderSimpleApiController(
-    val orderRepository: OrderRepository
+    val orderRepository: OrderRepository,
+    val orderSimpleQueryRepository: OrderSimpleQueryRepository,
 ) {
 
     /**
@@ -35,6 +37,6 @@ class OrderSimpleApiController(
 
     /* 패치 조인 */
     @GetMapping("/api/v4/simple-orders")
-    fun ordersV4(): BaseResponse<List<SimpleOrderDto>> =
-        BaseResponse(orderRepository.findAllDto())
+    fun ordersV4(): BaseResponse<List<OrderSimpleDto>> =
+        BaseResponse(orderSimpleQueryRepository.findAllDto())
 }

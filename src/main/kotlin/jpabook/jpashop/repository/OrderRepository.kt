@@ -3,7 +3,6 @@ package jpabook.jpashop.repository
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.domain.Order
 import jpabook.jpashop.domain.OrderStatus
-import jpabook.jpashop.repository.dto.SimpleOrderDto
 import org.springframework.stereotype.Repository
 import org.springframework.util.StringUtils
 import javax.persistence.EntityManager
@@ -37,16 +36,6 @@ class OrderRepository(
 //                maxResults = 1000
 //            }
 //            .resultList
-
-    fun findAllDto(): List<SimpleOrderDto> =
-        em.createQuery(
-            """select new jpabook.jpashop.repository.dto.SimpleOrderDto(o.id, m.name, o.orderDate, o.status, m.address) 
-                |from Order o
-                |join o.member m
-                |join o.delivery d
-            """.trimMargin(),
-            SimpleOrderDto::class.java
-        ).resultList
 
     fun findAll(orderSearch: OrderSearch): List<Order> =
         em.createQuery(
