@@ -21,12 +21,12 @@ class OrderRepository(
 
     fun findOne(id: Long): Order = em.find(Order::class.java, id)
 
-//    fun findAll(orderSearch: OrderSearch): List<Order> {
-//        return em.createQuery(
+//    fun findAll(orderSearch: OrderSearch): List<Order> =
+//        em.createQuery(
 //            """select o from Order o join o.member m
-//                |where o.status = :status
-//                |and m.name like :name
-//            """.trimMargin(),
+//            |where o.status = :status
+//            |and m.name like :name
+//        """.trimMargin(),
 //            Order::class.java
 //        )
 //            .apply {
@@ -36,7 +36,16 @@ class OrderRepository(
 //                maxResults = 1000
 //            }
 //            .resultList
-//    }
+
+    fun findAll(orderSearch: OrderSearch): List<Order> =
+        em.createQuery(
+            """select o from Order o
+            |join fetch o.member m
+            |join fetch o.delivery d
+        """.trimMargin(),
+            Order::class.java
+        )
+            .resultList
 
     fun findAllByString(orderSearch: OrderSearch): List<Order> {
         var jpql = "select o From Order o join o.member m"

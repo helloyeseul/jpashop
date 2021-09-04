@@ -24,4 +24,12 @@ class OrderSimpleApiController(
         orderRepository.findAllByString(OrderSearch())
             .map { SimpleOrderResponse.fromOrder(it) }
             .let { BaseResponse(it) }
+
+    /* 패치 조인 */
+    @GetMapping("/api/v3/simple-orders")
+    fun ordersV3(): BaseResponse<List<SimpleOrderResponse>> =
+        orderRepository.findAll(OrderSearch())
+            .map { SimpleOrderResponse.fromOrder(it) }
+            .let { BaseResponse(it) }
+
 }
