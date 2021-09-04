@@ -1,6 +1,6 @@
 package jpabook.jpashop.api.order
 
-import jpabook.jpashop.api.order.response.SimpleOrderResponse
+import jpabook.jpashop.api.order.response.OrderSimpleResponse
 import jpabook.jpashop.api.response.BaseResponse
 import jpabook.jpashop.domain.Order
 import jpabook.jpashop.repository.OrderRepository
@@ -23,19 +23,18 @@ class OrderSimpleApiController(
     fun ordersV1(): List<Order> = orderRepository.findAllByString(OrderSearch())
 
     @GetMapping("/api/v2/simple-orders")
-    fun ordersV2(): BaseResponse<List<SimpleOrderResponse>> =
+    fun ordersV2(): BaseResponse<List<OrderSimpleResponse>> =
         orderRepository.findAllByString(OrderSearch())
-            .map { SimpleOrderResponse.fromOrder(it) }
+            .map { OrderSimpleResponse.fromOrder(it) }
             .let { BaseResponse(it) }
 
     /* 패치 조인 */
     @GetMapping("/api/v3/simple-orders")
-    fun ordersV3(): BaseResponse<List<SimpleOrderResponse>> =
+    fun ordersV3(): BaseResponse<List<OrderSimpleResponse>> =
         orderRepository.findAll(OrderSearch())
-            .map { SimpleOrderResponse.fromOrder(it) }
+            .map { OrderSimpleResponse.fromOrder(it) }
             .let { BaseResponse(it) }
 
-    /* 패치 조인 */
     @GetMapping("/api/v4/simple-orders")
     fun ordersV4(): BaseResponse<List<OrderSimpleDto>> =
         BaseResponse(orderSimpleQueryRepository.findAllDto())

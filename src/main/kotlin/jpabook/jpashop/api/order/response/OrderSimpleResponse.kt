@@ -5,7 +5,7 @@ import jpabook.jpashop.domain.Order
 import jpabook.jpashop.domain.OrderStatus
 import java.time.LocalDateTime
 
-data class SimpleOrderResponse(
+data class OrderSimpleResponse(
     val orderId: Long,
     val name: String,
     val orderDate: LocalDateTime,
@@ -14,7 +14,7 @@ data class SimpleOrderResponse(
 ) {
     companion object {
 
-        fun fromOrder(order: Order) = SimpleOrderResponse(
+        fun fromOrder(order: Order) = OrderSimpleResponse(
             orderId = order.id!!,
             name = order.member.name, /* LAZY 로딩 초기화 */
             orderDate = order.orderDate,
