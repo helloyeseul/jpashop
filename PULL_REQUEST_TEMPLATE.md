@@ -5,7 +5,7 @@
 - 
 
 ## 스크린샷
-<image src="" width=300/>
+<image src="" width=300/> &nbsp;
 
 
 ## 
