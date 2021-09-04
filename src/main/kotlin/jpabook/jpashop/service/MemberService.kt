@@ -33,4 +33,11 @@ class MemberService(
 
     // 회원 한명 조회
     fun findOne(id: Long) = memberRepository.findOne(id)
+
+    // 회원 정보 수정
+    @Transactional
+    fun update(id: Long, name: String) {
+        val member = memberRepository.findOne(id)
+        member?.name = name
+    }
 }
