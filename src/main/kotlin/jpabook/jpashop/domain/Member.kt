@@ -17,7 +17,7 @@ class Member(
     /**
      * 이름
      */
-    val name: String = name
+    var name: String = name
 
     /**
      * 주소
