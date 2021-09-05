@@ -1,4 +1,4 @@
-package jpabook.jpashop.repository.order.simplequery
+package jpabook.jpashop.repository.order.query
 
 import jpabook.jpashop.domain.Address
 import jpabook.jpashop.domain.Order
@@ -10,9 +10,11 @@ data class OrderDto(
     val name: String,
     val orderDate: LocalDateTime,
     val orderStatus: OrderStatus,
-    val address: Address,
-    val orderItems: List<OrderItemDto>
+    val address: Address
 ) {
+
+    val orderItems: MutableList<OrderItemDto> = mutableListOf()
+    
     companion object {
 
         fun fromOrder(order: Order) = OrderDto(
@@ -20,8 +22,9 @@ data class OrderDto(
             name = order.member.name,
             orderDate = order.orderDate,
             orderStatus = order.status,
-            address = order.delivery.address,
-            orderItems = order.orderItemList.map { OrderItemDto.fromOrderItem(it) },
-        )
+            address = order.delivery.address
+        ).apply {
+            orderItems += order.orderItemList.map { OrderItemDto.fromOrderItem(it) }
+        }
     }
 }

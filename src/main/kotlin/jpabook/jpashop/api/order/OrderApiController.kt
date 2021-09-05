@@ -35,4 +35,8 @@ class OrderApiController(
         orderRepository.findAll(offset, limit)
             .map { OrderDto.fromOrder(it) }
             .let { BaseResponse(it) }
+
+    @GetMapping("/api/v4/orders")
+    fun ordersV4(): BaseResponse<List<OrderDto>> =
+        BaseResponse(orderQueryRepository.findAll())
 }

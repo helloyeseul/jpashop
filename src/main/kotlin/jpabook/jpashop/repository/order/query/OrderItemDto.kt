@@ -1,4 +1,4 @@
-package jpabook.jpashop.repository.order.simplequery
+package jpabook.jpashop.repository.order.query
 
 import jpabook.jpashop.domain.OrderItem
 
