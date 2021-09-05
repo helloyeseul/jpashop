@@ -8,7 +8,7 @@ class OrderQueryRepository(
     val em: EntityManager
 ) {
 
-    private fun selectOrders(): List<OrderDto> =
+    private fun findOrders(): List<OrderDto> =
         em.createQuery(
             """select new jpabook.jpashop.repository.order.query.OrderDto(o.id, m.name, o.orderDate, o.status, m.address) 
              |from Order o
@@ -18,9 +18,9 @@ class OrderQueryRepository(
             OrderDto::class.java
         ).resultList
 
-    private fun selectOrderItems(orderId: Long): List<OrderItemDto> =
+    private fun findOrderItems(orderId: Long): List<OrderItemDto> =
         em.createQuery(
-            """select new jpabook.jpashop.repository.order.query.OrderItemDto(oi.item.name, oi.orderPrice, oi.count) 
+            """select new jpabook.jpashop.repository.order.query.OrderItemDto(oi.order.id, oi.item.name, oi.orderPrice, oi.count) 
              |from OrderItem oi
              |join oi.item i 
              |where oi.order.id = :orderId
@@ -31,7 +31,26 @@ class OrderQueryRepository(
             .resultList
 
     fun findAll(): List<OrderDto> =
-        selectOrders().onEach {
-            it.orderItems += selectOrderItems(it.orderId)
+        findOrders().onEach { it.orderItems += findOrderItems(it.orderId) }
+
+    fun findAllOptimization(): List<OrderDto> =
+        findOrders().also { orders ->
+            val orderItemsMap = findOrderItemMap(orders.map { it.orderId })
+            orders.forEach { it.orderItems += orderItemsMap[it.orderId]!! }
         }
+
+    private fun findOrderItemMap(orderIds: List<Long>): Map<Long, List<OrderItemDto>> {
+        val orderItems = em.createQuery(
+            """select new jpabook.jpashop.repository.order.query.OrderItemDto(oi.order.id, oi.item.name, oi.orderPrice, oi.count) 
+                 |from OrderItem oi
+                 |join oi.item i 
+                 |where oi.order.id in :orderIds
+                """.trimMargin(),
+            OrderItemDto::class.java
+        )
+            .setParameter("orderIds", orderIds)
+            .resultList
+
+        return orderItems.groupBy { it.orderId }
+    }
 }

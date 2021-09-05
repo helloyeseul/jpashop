@@ -39,4 +39,8 @@ class OrderApiController(
     @GetMapping("/api/v4/orders")
     fun ordersV4(): BaseResponse<List<OrderDto>> =
         BaseResponse(orderQueryRepository.findAll())
+
+    @GetMapping("/api/v5/orders")
+    fun ordersV5(): BaseResponse<List<OrderDto>> =
+        BaseResponse(orderQueryRepository.findAllOptimization())
 }
