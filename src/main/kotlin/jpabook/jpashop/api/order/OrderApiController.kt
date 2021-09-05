@@ -17,4 +17,10 @@ class OrderApiController(
         orderRepository.findAllByString(OrderSearch())
             .map { OrderDto.fromOrder(it) }
             .let { BaseResponse(it) }
+
+    @GetMapping("/api/v3/orders")
+    fun ordersV3(): BaseResponse<List<OrderDto>> =
+        orderRepository.findAllWithItem()
+            .map { OrderDto.fromOrder(it) }
+            .let { BaseResponse(it) }
 }

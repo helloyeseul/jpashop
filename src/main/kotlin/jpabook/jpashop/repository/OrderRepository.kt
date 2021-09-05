@@ -47,6 +47,22 @@ class OrderRepository(
         )
             .resultList
 
+    fun findAllWithItem(): List<Order> =
+        em.createQuery(
+            """select distinct o from Order o
+                |join fetch o.member m
+                |join fetch o.delivery d
+                |join fetch o.orderItems oi
+                |join fetch oi.item i
+        """.trimMargin(),
+            Order::class.java
+        )
+//            .apply {  /* 컬렉션 페치 조인은 페이징 불가 (메모리에 다 떙겨와서 페이징해버림 -> OOM..) */
+//                firstResult = 0
+//                maxResults = 20
+//            }
+            .resultList
+
     fun findAllByString(orderSearch: OrderSearch): List<Order> {
         var jpql = "select o From Order o join o.member m"
 
