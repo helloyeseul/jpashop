@@ -47,6 +47,21 @@ class OrderRepository(
         )
             .resultList
 
+    fun findAll(offset: Int, limit: Int): List<Order> {
+        return em.createQuery(
+            """select o from Order o
+            |join fetch o.member m
+            |join fetch o.delivery d
+        """.trimMargin(),
+            Order::class.java
+        )
+            .apply {
+                firstResult = offset
+                maxResults = limit
+            }
+            .resultList
+    }
+
     fun findAllWithItem(): List<Order> =
         em.createQuery(
             """select distinct o from Order o
